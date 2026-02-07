@@ -1,0 +1,41 @@
+services:
+  airflow:
+    build: .
+    container_name: airflow_dbt 
+    environment:
+      - AIRFLOW__CORE__LOAD_EXAMPLES=false
+      - AIRFLOW__CORE__EXECUTOR=LocalExecutor
+    volumes:
+      - ./dags:/opt/airflow/dags 
+      - ./dbt:/opt/airflow/dbt 
+      - ./logs:/opt/airflow/logs
+    ports:
+      - "8080:8080"
+    depends_on:
+      datawarehouse:
+        condition: service_healthy
+
+  api:
+    image: ghcr.io/fretadao/tickets_fake_api:latest 
+    ports: 
+      - "8000:8000"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+  
+  datawarehouse:
+    image: postgres:17 
+    environment:
+      - POSTGRES_USER=postgres 
+      - POSTGRES_PASSWORD=admin 
+      - POSTGRES_DB=datawarehouse
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
