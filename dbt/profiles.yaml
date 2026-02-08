@@ -1,0 +1,12 @@
+elt_data_pipeline:
+   target: dev 
+   outputs:
+     dev:
+       type: postgres 
+       host: datawarehouse 
+       user: postgres 
+       password: admin 
+       port: 5432
+       dbname: datawarehouse 
+       schema: elt_data_pipeline 
+       threads: 1
