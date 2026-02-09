@@ -11,7 +11,10 @@ RUN apt-get update && apt-get install -y \
 USER airflow 
 
 # Instala o dbt-core e o adaptador do PostgreSQL
-RUN pip install --no-cache-dir dbt-core dbt-postgres 
+RUN pip install --no-cache-dir dbt-core dbt-postgres
+
+RUN mkdir -p /home/airflow/.dbt
+COPY profiles.yml /home/airflow/.dbt/profiles.yml
 
 # Configura o airflow para rodar em modo standalone
 ENTRYPOINT [ "airflow", "standalone" ]
