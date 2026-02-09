@@ -10,7 +10,6 @@ services:
       - ./dbt:/opt/airflow/dbt 
       - ./logs:/opt/airflow/logs
       - ./bucket:/opt/airflow/bucket
-      - ./api:/opt/airflow/api
     ports:
       - "8080:8080"
     depends_on:
