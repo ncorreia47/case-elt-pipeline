@@ -208,3 +208,6 @@ __marimo__/
 
 # DevOps
 logs/
+
+# Raw Data
+*.json
