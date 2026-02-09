@@ -1,7 +1,7 @@
 {{
   config(
     materialized = "table",
-    tags = ["bronze", "custom_fields_tickets"]
+    tags = ["bronze", "ticket_custom_fields"]
   )
 }}
 
