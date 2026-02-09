@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: landing
+    schema: elt_data_pipeline_landing
+
+    tables:
+      - name: api_files_landing
