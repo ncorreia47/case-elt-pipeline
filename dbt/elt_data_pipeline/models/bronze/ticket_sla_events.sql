@@ -5,7 +5,7 @@
   )
 }}
 
-with raw_ticket_metrics as (
+with raw_ticket_sla_events as (
 
     select * from {{ source('landing', 'api_files_landing') }} afl where afl.endpoint = 'ticket_sla_events'
 
