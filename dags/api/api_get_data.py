@@ -5,7 +5,7 @@ from datetime import datetime
 from pathlib import Path
 from api.enum_endpoints import Endpoints
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 BASE_URL = 'http://api:8000'
 DATE = datetime.now()
 YEAR = DATE.strftime("%Y")
