@@ -7,7 +7,7 @@
 
 with raw_groups as (
 
-    select * from elt_data_pipeline_landing.api_files_landing afl where afl.endpoint = 'groups'
+    select * from {{ source('landing', 'api_files_landing') }} afl where afl.endpoint = 'groups'
 
 )
 

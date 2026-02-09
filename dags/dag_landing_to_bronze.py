@@ -25,7 +25,17 @@ def landing_to_bronze():
         def groups():
             return "dbt run --models bronze.groups"
         
+        @task.bash(cwd=DBT_PROJECT_DIR)
+        def users():
+            return "dbt run --models bronze.users"
+        
+        @task.bash(cwd=DBT_PROJECT_DIR)
+        def organizations():
+            return "dbt run --models bronze.organizations"
+        
         groups()
+        users()
+        organizations()
 
     setup_dbt() >> bronze_layer()
 

@@ -1,0 +1,38 @@
+{{
+  config(
+    materialized = "table",
+    tags = ["bronze", "users"]
+  )
+}}
+
+with raw_users as (
+
+    select * from {{ source('landing', 'api_files_landing') }} afl where afl.endpoint = 'users'
+
+)
+
+, exploded_json as (
+
+    select
+        jsonb_array_elements(payload) as obj
+    from raw_users
+
+)
+
+, final as (
+
+    select
+        (obj ->> 'id')::int                            as user_id
+      , obj ->> 'name'                                 as name
+      , obj ->> 'email'                                as email
+      , (obj ->> 'active')::boolean                    as active
+      , (obj ->> 'created_at')::timestamp              as created_at
+      , (obj ->> 'updated_at')::timestamp              as updated_at
+      , current_timestamp                              as ingested_at
+      , {{ snapshot_ts() }}                            as snapshot_ts
+    from exploded_json
+	
+)
+
+select *
+from final
