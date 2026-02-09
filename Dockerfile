@@ -16,5 +16,7 @@ RUN pip install --no-cache-dir dbt-core dbt-postgres
 RUN mkdir -p /home/airflow/.dbt
 COPY profiles.yml /home/airflow/.dbt/profiles.yml
 
+ENV DBT_PROFILES_DIR=/home/airflow/.dbt
+
 # Configura o airflow para rodar em modo standalone
 ENTRYPOINT [ "airflow", "standalone" ]
