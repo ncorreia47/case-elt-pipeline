@@ -13,6 +13,7 @@ USER airflow
 # Instala o dbt-core e o adaptador do PostgreSQL
 RUN pip install --no-cache-dir dbt-core dbt-postgres
 
+# Copia o arquivo profiles.yml local e adiciona a pasta ./dbt como um profile do dbt
 RUN mkdir -p /home/airflow/.dbt
 COPY profiles.yml /home/airflow/.dbt/profiles.yml
 
