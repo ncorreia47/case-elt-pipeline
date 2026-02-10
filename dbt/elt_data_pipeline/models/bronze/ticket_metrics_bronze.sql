@@ -1,7 +1,7 @@
 {{
   config(
     materialized = "table",
-    tags = ["bronze", "ticket_metrics"]
+    tags = ["bronze", "ticket_metrics_bronze"]
   )
 }}
 
@@ -36,7 +36,6 @@ with raw_ticket_metrics as (
       , (obj ->> 'requester_wait_time_in_minutes')::int as requester_wait_time_in_minutes
       , current_timestamp                               as ingested_at
       , {{ snapshot_ts() }}                             as snapshot_ts
-      
     from exploded_json
 	
 )

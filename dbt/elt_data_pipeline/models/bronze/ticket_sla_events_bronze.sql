@@ -1,7 +1,7 @@
 {{
   config(
     materialized = "table",
-    tags = ["bronze", "ticket_sla_events"]
+    tags = ["bronze", "ticket_sla_events_bronze"]
   )
 }}
 

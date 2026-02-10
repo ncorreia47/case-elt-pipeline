@@ -1,7 +1,7 @@
 {{
   config(
     materialized = "table",
-    tags = ["bronze", "groups"]
+    tags = ["bronze", "groups_bronze"]
   )
 }}
 
@@ -22,7 +22,7 @@ with raw_groups as (
 , final as (
 
     select
-        (obj ->> 'id')::int                            as user_id
+        (obj ->> 'id')::int                            as id
       , obj ->> 'name'                                 as name
       , (obj ->> 'created_at')::timestamp              as created_at
       , (obj ->> 'updated_at')::timestamp              as updated_at

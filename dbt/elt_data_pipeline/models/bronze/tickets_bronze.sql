@@ -1,7 +1,7 @@
 {{
   config(
     materialized = "table",
-    tags = ["bronze", "tickets"]
+    tags = ["bronze", "tickets_bronze"]
   )
 }}
 
@@ -37,7 +37,6 @@ with raw_tickets as (
       , (obj ->> 'updated_at')::timestamp    as updated_at
       , current_timestamp                    as ingested_at
       , {{ snapshot_ts() }}                  as snapshot_ts
-      
     from exploded_json
 	
 )

@@ -1,7 +1,7 @@
 {{
   config(
     materialized = "table",
-    tags = ["bronze", "ticket_custom_fields"]
+    tags = ["bronze", "ticket_custom_fields_bronze"]
   )
 }}
 
@@ -27,7 +27,6 @@ with raw_tickets as (
       , field ->> 'value'                    as value
       , current_timestamp                    as ingested_at
       , {{ snapshot_ts() }}                  as snapshot_ts
-      
     from exploded_json,
     lateral jsonb_array_elements(obj -> 'custom_fields') as field
 	
