@@ -16,7 +16,7 @@ with ticket_custom_fields_bronze as (
     select
         ticket_id           as cd_ticket_id
       , id                  as cd_ticket_custom_field_id
-      , value               as ds_ticket_custom_field
+      , upper(value)        as ds_ticket_custom_field
       , current_timestamp   as ingested_at
       , {{ snapshot_ts() }} as snapshot_ts
     from ticket_custom_fields_bronze
