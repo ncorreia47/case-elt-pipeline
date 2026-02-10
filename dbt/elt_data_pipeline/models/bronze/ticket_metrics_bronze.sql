@@ -26,7 +26,7 @@ with raw_ticket_metrics as (
       , (obj ->> 'reopens')::int                        as reopens
       , (obj ->> 'replies')::int                        as replies
       , (obj ->> 'solved_at')::timestamp                as solved_at
-      , obj ->> 'ticket_id'                             as ticket_id
+      , (obj ->> 'ticket_id')::int                      as ticket_id
       , (obj ->> 'created_at')::timestamp               as created_at
       , (obj ->> 'assigned_at')::timestamp              as assigned_at
       , obj ->> 'satisfaction_score'                    as satisfaction_score
