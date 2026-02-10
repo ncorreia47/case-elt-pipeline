@@ -21,7 +21,8 @@ DBT_PROJECT_DIR = "/opt/airflow/dbt/elt_data_pipeline"
                 "tag:ticket_metrics_bronze",
                 "tag:ticket_sla_events_bronze",
                 "tag:users_bronze",
-                "tag:organizations_bronze"
+                "tag:organizations_bronze",
+                "tag:groups_bronze"
             ],
             description="Selecione o conjunto de modelos dbt para executar"
         )
@@ -56,7 +57,8 @@ def landing_to_bronze():
             "tag:ticket_metrics_bronze": "tag:ticket_metrics_silver",
             "tag:ticket_sla_events_bronze": "tag:ticket_sla_events_silver",
             "tag:users_bronze": "tag:users_silver",
-            "tag:organizations_bronze": "tag:organizations_silver"
+            "tag:organizations_bronze": "tag:organizations_silver",
+            "tag:groups_bronze": "tag:groups_silver"
         }
         # Retorna o valor mapeado ou um padrao caso não encontre
         return mapping.get(current_selector, "tag:silver")
