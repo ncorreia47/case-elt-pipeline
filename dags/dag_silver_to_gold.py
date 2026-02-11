@@ -33,16 +33,15 @@ def silver_to_gold():
     def setup_dbt():
         return "dbt deps"
 
-    @task_group(group_id="silver_layer")
-    def silver_layer():
+    @task_group(group_id="gold_layer")
+    def gold_layer():
         
         @task.bash(cwd=DBT_PROJECT_DIR)
-        def run_silver(params=None):
+        def run_gold(params=None):
             return f"dbt build --select {params['selector']}"
         
-        run_silver()
+        run_gold()
         
-        
-    setup_dbt() >> silver_layer()
+    setup_dbt() >> gold_layer()
 
 silver_to_gold()
