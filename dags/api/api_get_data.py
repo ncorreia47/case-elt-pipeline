@@ -11,10 +11,8 @@ DATE = datetime.now()
 YEAR = DATE.strftime("%Y")
 MONTH = ANO = DATE.strftime("%m")
 CREATED_AT = DATE.strftime("%Y%m%d%H%M%S")
-START_TIME = DATE.isoformat()
 
-
-def api_get_data(endpoint : Endpoints):
+def api_get_data(endpoint : Endpoints, start_time=None):
 
     URL = f'{BASE_URL}/{endpoint.value}'
     BUCKET_FOLDER = f'{BASE_DIR}/bucket/{endpoint.value}/{YEAR}/{MONTH}'
@@ -35,13 +33,14 @@ def api_get_data(endpoint : Endpoints):
     params = {'page': page, 'page_size': 1000}
 
     # Adiciona start_time caso o endpoint precise dele
-    if endpoint in ENDPOINTS_WITH_START_TIME:
-        params['start_time'] = START_TIME
+    if endpoint in ENDPOINTS_WITH_START_TIME and start_time:
+        params['start_time'] = start_time
 
     while True:
+        params['page'] = page
 
         # Faz a requisicao considerando a pagina atual
-        response = requests.get(URL, params={'page': page, 'page_size': 1000}, timeout=30)
+        response = requests.get(URL, params, timeout=30)
         response.raise_for_status()
 
         try:
