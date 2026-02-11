@@ -2,15 +2,15 @@ models:
   - name: groups_bronze
     description: "Estrutura relacional de grupos de suporte (Zendesk API)."
     columns:
-      - name: cd_group_id
+      - name: id
         description: "Chave primária: ID único do grupo."
         tests: [unique, not_null]
-      - name: ds_group_name
-        description: "Nome do grupo (formatado em maiúsculas)."
+      - name: name
+        description: "Nome do grupo."
         tests: [not_null]
-      - name: dt_created_at
+      - name: created_at
         description: "Data e hora de criação do grupo."
-      - name: dt_updated_at
+      - name: updated_at
         description: "Data e hora da última atualização do grupo."
 
   - name: organizations_bronze
