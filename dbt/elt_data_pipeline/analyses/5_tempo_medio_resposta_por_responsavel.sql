@@ -16,11 +16,12 @@ with tickets_gold as (
 , final as (
 
     select 
-        ds_status
-      , count(1) as qtd_tickets
+        ds_user_name
+      , avg(nr_reply_time_in_minutes) as nr_avg_reply_time_in_minutes
     from tickets_gold
-    group by 1 
-    order by 2 desc 
+    where 1=1
+    group by 1
+    order by 2 desc
 
 )
 

@@ -16,11 +16,13 @@ with tickets_gold as (
 , final as (
 
     select 
-        ds_status
-      , count(1) as qtd_tickets
+        ds_service_type
+      , avg(nr_ticket_duration_in_minutes) as nr_avg_ticket_duration_in_minutes
     from tickets_gold
-    group by 1 
-    order by 2 desc 
+    where 1=1 
+      and ds_status in ('CLOSED', 'SOLVED') --resolvido
+    group by 1
+    order by 2 desc
 
 )
 

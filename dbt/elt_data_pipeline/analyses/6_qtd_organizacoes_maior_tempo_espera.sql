@@ -16,11 +16,13 @@ with tickets_gold as (
 , final as (
 
     select 
-        ds_status
-      , count(1) as qtd_tickets
+        ds_organization_name
+      , sum(nr_on_hold_time_in_minutes) as nr_sum_on_hold_time_in_minutes
     from tickets_gold
-    group by 1 
-    order by 2 desc 
+    where 1=1
+    group by 1
+    order by 2 desc
+    limit 10
 
 )
 

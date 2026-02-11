@@ -1,26 +1,29 @@
 {{
   config(
     materialized = "view",
-    tags = ["analyses", "violacoes_por_politica_sla"]
+    tags = ["analyses"]
   )
 }}
 
-with ticket_sla_events_silver as (
 
-    select * from {{ ref('ticket_sla_events_silver') }}
+-- fonte da verdade para analises dos tickets, pois é a camada mais proxima do negocio 
+with tickets_gold as (
+
+    select * from {{ ref('tickets_gold') }}
 
 )
 
 , final as (
+
     select 
-        cd_sla_policy_id
-      , ds_sla_policy_title
+        ds_sla_policy_title
       , count(1)            as nr_qtd_violacoes
-    from ticket_sla_events_silver
+    from tickets_gold
     where 1=1 
-      and ds_type = 'BREACH' --violado 
-    group by 1, 2
-    order by 3 desc
+      and is_breached --violado 
+    group by 1
+    order by 2 desc
+
 )
 
 select *
