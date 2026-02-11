@@ -47,16 +47,15 @@ Obs: Todo o projeto foi executado e buildado em uma distro Linux (Ubuntu v.20.04
     dbt debug
 ```
 
-Obs: substitua <nome_do_container> pelo nome real do container que o Docker Compose criou.
-Dependendo da configuração local, o Airflow pode precisar de permissões em pastas para salvar os arquivos que simulam um bucket.
-No ambiente Linux, a abordagem utilizada foi conceder acesso ao user airflow (50000) via acl (não utilizei chmod). 
-Isso garante que seu usuário local não perca permissões.
+5. (Opcional) Substitua <nome_do_container> pelo nome real do container que o Docker Compose criou.
+   Dependendo da configuração local, o Airflow pode precisar de permissões em pastas para salvar os arquivos que simulam um bucket.
+   No ambiente Linux, a abordagem utilizada foi conceder acesso ao user airflow (50000) via acl (não utilizei chmod). Isso garante que seu usuário local não perca permissões.
     
 ```bash
     sudo setfacl -R -m u:50000:rwx nome_pasta_para_dar_grant_de_acesso. Ex dags/
 ```
 
-5. Crie um usuário do banco de dados na UI do Airflow (para ser utilizado via parametros). Na UI do Airflow, vá em: Admin -> Connections -> Add Connection e adicione a seguinte conexão:
+6. Crie um usuário do banco de dados na UI do Airflow (para ser utilizado via parametros). Na UI do Airflow, vá em: Admin -> Connections -> Add Connection e adicione a seguinte conexão:
 ```bash
     host=datawarehouse
     login=postgres
