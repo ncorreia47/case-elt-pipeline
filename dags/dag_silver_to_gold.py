@@ -38,9 +38,15 @@ def silver_to_gold():
         
         @task.bash(cwd=DBT_PROJECT_DIR)
         def run_gold(params=None):
-            return f"dbt build --select {params['selector']}"
+            selected_tag = params['selector']
+            return f"dbt run --select {selected_tag}"
         
-        run_gold()
+        @task.bash(cwd=DBT_PROJECT_DIR)
+        def test_gold(params=None):
+            selected_tag = params['selector']
+            return f"dbt test --select {selected_tag}"
+        
+        run_gold() >> test_gold()
         
     setup_dbt() >> gold_layer()
 

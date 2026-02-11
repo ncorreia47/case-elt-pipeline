@@ -73,7 +73,7 @@ def landing_to_bronze():
     trigger_silver = TriggerDagRunOperator(
         task_id="trigger_silver_dag",
         trigger_dag_id="dag_bronze_to_silver",
-        conf={"selector": next_tag}, # Passa o resultado da função de mapeamento
+        conf={"selector": next_tag}
     )
 
     setup_dbt() >> bronze_layer() >> next_tag >> trigger_silver

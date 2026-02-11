@@ -44,6 +44,7 @@ def bronze_to_silver():
         @task.bash(cwd=DBT_PROJECT_DIR, outlets=[AIRFLOW_ASSET])
         def run_silver(params=None, triggering_asset_events=None):
 
+            selected_tag = params['selector']
             dbt_vars = ""
 
             if triggering_asset_events and INGESTION_ASSET in triggering_asset_events:
@@ -52,9 +53,14 @@ def bronze_to_silver():
                
                if start_time:
                    dbt_vars = f'--vars \'{{"manual_start_time": "{start_time}"}}\''
-            return f"dbt build --select {params['selector']} {dbt_vars}"
+            return f"dbt run --select {selected_tag} {dbt_vars}"
         
-        run_silver()
+        @task.bash(cwd=DBT_PROJECT_DIR)
+        def test_silver(params=None):
+            selected_tag = params['selector']
+            return f"dbt test --select {selected_tag}"
+        
+        run_silver() >> test_silver()
 
     setup_dbt() >> silver_layer()
 
