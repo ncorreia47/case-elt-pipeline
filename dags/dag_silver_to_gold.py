@@ -27,7 +27,7 @@ AIRFLOW_ASSET = Asset('dbt_bronze_to_silver')
 )
 
 
-def bronze_to_silver():
+def silver_to_gold():
 
     @task.bash(cwd=DBT_PROJECT_DIR)
     def setup_dbt():
@@ -45,4 +45,4 @@ def bronze_to_silver():
         
     setup_dbt() >> silver_layer()
 
-bronze_to_silver()
+silver_to_gold()
