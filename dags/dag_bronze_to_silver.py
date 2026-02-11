@@ -4,6 +4,7 @@ from datetime import datetime
 
 DBT_PROJECT_DIR = "/opt/airflow/dbt/elt_data_pipeline"
 AIRFLOW_ASSET = Asset('dbt_bronze_to_silver')
+INGESTION_ASSET = Asset("api_raw_data")
 
 @dag(
     dag_id="dag_bronze_to_silver",
@@ -41,8 +42,17 @@ def bronze_to_silver():
     def silver_layer():
         
         @task.bash(cwd=DBT_PROJECT_DIR, outlets=[AIRFLOW_ASSET])
-        def run_silver(params=None):
-            return f"dbt build --select {params['selector']}"
+        def run_silver(params=None, triggering_asset_events=None):
+
+            dbt_vars = ""
+
+            if triggering_asset_events and INGESTION_ASSET in triggering_asset_events:
+               event = triggering_asset_events[INGESTION_ASSET]
+               start_time = event.metadata.get("start_time")
+               
+               if start_time:
+                   dbt_vars = f'--vars \'{{"manual_start_time": "{start_time}"}}\''
+            return f"dbt build --select {params['selector']} {dbt_vars}"
         
         run_silver()
 

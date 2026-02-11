@@ -1,10 +1,12 @@
 import sys
 import os
-from airflow.sdk import dag, task, task_group
+from airflow.sdk import dag, task, task_group,  Asset, Metadata
 from airflow.models.param import Param
 from datetime import datetime
 from api.api_get_data import api_get_data
 from api.enum_endpoints import Endpoints
+
+INGESTION_ASSET = Asset("api_raw_data")
 
 @dag(
     dag_id = "dag_api_get_data",
@@ -44,7 +46,12 @@ def create_api_tasks_dag():
                 return f"Dados coletados para o endpoint {endpoint.value} com sucesso!"
 
             get_data(endpoint)
+    
+    @task(outlets=[INGESTION_ASSET])
+    def finish_ingestion(params=None):
+        st = params.get("start_time")
+        yield Metadata(INGESTION_ASSET, {"start_time": st})
 
-    get_data_group()
+    get_data_group() >> finish_ingestion()
 
 dag_api_get_data = create_api_tasks_dag()
