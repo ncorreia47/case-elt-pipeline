@@ -73,8 +73,18 @@ def ingest_json_landing_zone():
         hook.run(sql, parameters=(endpoint, file_path, json_file_datetime, json.dumps(data)))
         return f"Arquivo {file_path} processado com sucesso."
     
+    @task
+    def cleanup_processed_files(file_list):
+
+        for file_path in file_list:
+            if os.path.exists(file_path):
+                os.remove(file_path)
+                print(f"Arquivo removido com sucesso: {file_path}")
+        return "Limpeza do bucket finalizada."
+    
+    
     create_landing_schema = create_landing_schema()
     files = list_bucket_files()
-    create_landing_schema >> load_json_to_postgres.expand(file_path=files)
+    create_landing_schema >> load_json_to_postgres.expand(file_path=files) >> cleanup_processed_files(files)
 
 ingest_json_landing_zone()
