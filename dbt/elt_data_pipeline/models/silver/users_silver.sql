@@ -1,6 +1,7 @@
 {{
   config(
-    materialized = "table",
+    materialized = "incremental",
+    unique_key = "cd_user_id",
     tags = ["silver", "users_silver"]
   )
 }}
@@ -8,6 +9,13 @@
 with users_bronze as (
 
     select * from {{ ref('users_bronze') }}
+
+    {% if is_incremental() %}
+        where updated_at >= coalesce(
+            '{{ var("manual_start_time", none) }}'::timestamp
+          , (select max(dt_updated_at) from {{ this }})
+        )
+    {% endif %}
 
 )
 

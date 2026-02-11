@@ -1,6 +1,7 @@
 {{
   config(
-    materialized = "table",
+    materialized = "incremental",
+    unique_key= ["cd_ticket_metrics_id", "cd_ticket_id"],
     tags = ["silver", "ticket_metrics_silver"]
   )
 }}
@@ -8,6 +9,13 @@
 with ticket_metrics_bronze as (
 
     select * from {{ ref('ticket_metrics_bronze') }}
+
+    {% if is_incremental() %}
+        where updated_at >= coalesce(
+            '{{ var("manual_start_time", none) }}'::timestamp
+          , (select max(dt_updated_at) from {{ this }})
+        )
+    {% endif %}
 
 )
 
