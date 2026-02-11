@@ -1,0 +1,18 @@
+models:
+  - name: tickets_gold
+    description: "Tabela mestre consolidada de tickets (Camada Gold)."
+    tests:
+      # Teste para garantir que resolvido não é antes de criado
+      - dbt_utils.expression_is_true:
+          expression: "dt_solved_at >= dt_created_at"
+      # Teste para garantir que atualizado não é antes de criado
+      - dbt_utils.expression_is_true:
+          expression: "dt_updated_at >= dt_created_at"
+    columns:
+      - name: cd_ticket_id
+        tests:
+          - unique
+          - not_null
+      - name: dt_created_at
+        tests:
+          - not_null

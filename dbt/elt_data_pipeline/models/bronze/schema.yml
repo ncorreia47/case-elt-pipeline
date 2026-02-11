@@ -1,0 +1,90 @@
+models:
+  - name: groups_bronze
+    description: "Estrutura relacional de grupos de suporte (Zendesk API)."
+    columns:
+      - name: cd_group_id
+        description: "Chave primária: ID único do grupo."
+        tests: [unique, not_null]
+      - name: ds_group_name
+        description: "Nome do grupo (formatado em maiúsculas)."
+        tests: [not_null]
+      - name: dt_created_at
+        description: "Data e hora de criação do grupo."
+      - name: dt_updated_at
+        description: "Data e hora da última atualização do grupo."
+
+  - name: organizations_bronze
+    description: "Lista de organizações clientes cadastradas no sistema."
+    columns:
+      - name: id
+        description: "ID único da organização."
+        tests: [unique, not_null]
+      - name: name
+        description: "Nome da organização."
+        tests: [not_null]
+      - name: external_id
+        description: "ID de referência externa para integração com outros sistemas."
+
+  - name: users_bronze
+    description: "Cadastro de usuários (agentes e clientes)."
+    columns:
+      - name: id
+        description: "ID único do usuário."
+        tests: [unique, not_null]
+      - name: email
+        description: "Endereço de e-mail principal do usuário."
+        tests: [not_null]
+      - name: active
+        description: "Flag booleano indicando se o usuário está ativo."
+
+  - name: tickets_bronze
+    description: "Tabela mestre de tickets de suporte."
+    columns:
+      - name: id
+        description: "ID único do ticket."
+        tests: [unique, not_null]
+      - name: status
+        description: "Status atual do ticket (new, open, pending, solved, etc)."
+        tests: [not_null]
+      - name: organization_id
+        description: "ID da organização à qual o ticket pertence."
+      - name: group_id
+        description: "ID do grupo técnico responsável pelo ticket."
+
+  - name: ticket_custom_fields_bronze
+    description: "Valores expandidos de campos personalizados de cada ticket (1:N)."
+    columns:
+      - name: ticket_id
+        description: "ID do ticket de origem."
+        tests: [not_null]
+      - name: id
+        description: "ID da definição do campo personalizado."
+        tests: [not_null]
+      - name: value
+        description: "Valor preenchido no campo personalizado."
+
+  - name: ticket_metrics_bronze
+    description: "Métricas de desempenho e tempos de resposta de tickets."
+    columns:
+      - name: id
+        description: "ID único da métrica."
+        tests: [unique, not_null]
+      - name: ticket_id
+        description: "ID do ticket relacionado."
+        tests: [not_null]
+      - name: solved_at
+        description: "Timestamp de resolução do ticket."
+      - name: reply_time_in_minutes
+        description: "Tempo de resposta acumulado em minutos."
+
+  - name: ticket_sla_events_bronze
+    description: "Eventos históricos de aplicação de políticas de SLA."
+    columns:
+      - name: id
+        description: "ID único do evento de SLA."
+        tests: [unique, not_null]
+      - name: sla_policy_title
+        description: "Nome da política de SLA aplicada ao evento."
+      - name: time
+        description: "Momento exato em que o evento de SLA ocorreu."
+        tests: [not_null]

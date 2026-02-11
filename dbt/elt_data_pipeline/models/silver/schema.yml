@@ -1,0 +1,69 @@
+models:
+  - name: groups_silver
+    description: "Dados de grupos processados de forma incremental. Representa um Asset de estrutura organizacional."
+    columns:
+      - name: cd_group_id
+        description: "Chave primária do grupo."
+        tests: [unique, not_null]
+      - name: ds_group_name
+        description: "Nome do grupo em caixa alta."
+        tests: [not_null]
+
+  - name: organizations_silver
+    description: "Organizações clientes processadas incrementalmente."
+    columns:
+      - name: cd_organization_id
+        description: "ID único da organização (PK)."
+        tests: [unique, not_null]
+      - name: ds_organization_name
+        description: "Nome da organização (Upper)."
+        tests: [not_null]
+
+  - name: users_silver
+    description: "Cadastro consolidado de usuários (agentes e clientes)."
+    columns:
+      - name: cd_user_id
+        description: "ID único do usuário."
+        tests: [unique, not_null]
+      - name: ds_email
+        description: "E-mail do usuário."
+        tests: [not_null]
+
+  - name: tickets_silver
+    description: "Tabela mestre de tickets com histórico de atribuição (atendente/grupo)."
+    columns:
+      - name: cd_ticket_id
+        description: "Identificador único do ticket."
+        tests: [not_null]
+      - name: ds_status
+        description: "Status do ticket em caixa alta."
+        tests: [not_null]
+
+  - name: ticket_custom_fields_silver
+    description: "Valores transformados de campos personalizados (Relação 1:N)."
+    columns:
+      - name: cd_ticket_id
+        tests: [not_null]
+      - name: cd_ticket_custom_field_id
+        tests: [not_null]
+
+  - name: ticket_metrics_silver
+    description: "Métricas de desempenho (reaberturas, respostas e scores)."
+    columns:
+      - name: cd_ticket_metrics_id
+        description: "ID único da métrica."
+        tests: [not_null]
+      - name: cd_ticket_id
+        description: "Vínculo com a tabela de tickets."
+        tests: [not_null]
+
+  - name: ticket_sla_events_silver
+    description: "Eventos de SLA com extração de prazos via Regex."
+    columns:
+      - name: cd_ticket_sla_event_id
+        tests: [not_null]
+      - name: nr_sla_response_limit_in_hour
+        description: "Limite de horas extraído do título da política."
+      - name: dt_time
+        description: "Data e hora do evento de SLA."
+        tests: [not_null]
