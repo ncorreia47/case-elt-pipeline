@@ -43,9 +43,14 @@ def landing_to_bronze():
         @task.bash(cwd=DBT_PROJECT_DIR)
         def run_bronze(params=None):
             selected_tag = params['selector']
-            return f"dbt build --select {selected_tag}"
+            return f"dbt run --select {selected_tag}"
         
-        run_bronze()
+        @task.bash(cwd=DBT_PROJECT_DIR)
+        def test_bronze(params=None):
+            selected_tag = params['selector']
+            return f"dbt test --select {selected_tag}"
+        
+        run_bronze() >> test_bronze()
     
     @task
     def decide_next_tag(current_selector):
