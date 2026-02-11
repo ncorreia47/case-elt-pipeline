@@ -5,9 +5,10 @@
   )
 }}
 
+-- deduplica arquivos json duplicados, por ocasioes de reprocessamentos. Ainda nao aplicamos nenhum tipo de merge/update nos dados
 with raw_ticket_sla_events as (
 
-    select * from {{ source('landing', 'api_files_landing') }} afl where afl.endpoint = 'ticket_sla_events'
+    select distinct * from {{ source('landing', 'api_files_landing') }} afl where afl.endpoint = 'ticket_sla_events'
 
 )
 
