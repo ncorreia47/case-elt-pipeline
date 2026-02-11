@@ -93,9 +93,9 @@ No dbt, foram aplicadas as práticas para modelagem das camadas bronze, silver e
 2. Criação de testes com dbt tests, garantindo a integridade dos dados entre camadas
 3. Utilização das funcionalidades do Jinja para macros e aplicações de cargas incrementais (utilizando parametros do Airflow no dbt)
 4. Padronização das consultas, nomes e outros métodos, com o objetivo de facilitar o entendimento de novos usuários
-5. Todas as queries de negócios (ad-hoc) foram disponibilzadas na pasta analyses
+5. Todas as queries de negócios (ad-hoc) foram disponibilizadas na pasta analyses
 
-O que não foi implementando nesse projeto mas que fica como um backlog de melhorias:
+O que não foi implementado nesse projeto mas que fica como um backlog de melhorias:
 1. Contratos de dados (desde a ingestão até a camada analítica)
 2. Snapshots de dados
 3. Atualizações com os métodos nativos do dbt (como freshness)
